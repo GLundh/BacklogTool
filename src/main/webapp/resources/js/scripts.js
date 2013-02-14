@@ -1349,7 +1349,7 @@ $(document).ready(function () {
                         +'<textarea placeholder="Title" id="title'+currentParent.id+'" class="bindChange titleText hidden-edit title ' + currentParent.id + '" rows="1" maxlength="100">' + currentParent.title + '</textarea>'
                         //STORY TITLE END
                         //STORYDESCRIPTION START
-                        +'<p class="description ' + currentParent.id + '">' + addLinksAndLineBreaks(truncate(currentParent.description, 190)) + '</p>'
+                        +'<p class="description ' + currentParent.id + '">' + addLinksAndLineBreaks(currentParent.description) + '</p>'
                         +'<textarea placeholder="Description" id="description'+currentParent.id+'" class="bindChange hidden-edit description ' + currentParent.id + '" rows="2" maxlength="1000">' + currentParent.description + '</textarea>'
                         //STORYDESCRIPTION END
                         +'</div>'
@@ -1790,6 +1790,14 @@ $(document).ready(function () {
         if(disableEditsBoolean) {
             disableEdits();
         }
+        
+        $('p.description').jTruncate({  
+            length: 190,  
+            minTrail: 0,  
+            moreText: "[see all]",  
+            lessText: "[hide extra]",  
+            ellipsisText: "..."
+        });  
     };
 
     var setHeightAndMargin = function (value) {

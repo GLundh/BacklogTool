@@ -47,6 +47,8 @@ THE SOFTWARE.
     src="<c:url value="/resources/js/jquery-ui-1.8.21.custom.min.js" />"></script>
 <script type="text/javascript"
     src="<c:url value="/resources/js/jquery.autosize-min.js" />"></script>
+    <script type="text/javascript"
+    src="<c:url value="/resources/js/jquery.jtruncate.pack.js" />"></script>
 <script type="text/javascript"
     src="<c:url value="/resources/js/scripts.js" />"></script>
 <script type="text/javascript" src="code.icepush"></script>
