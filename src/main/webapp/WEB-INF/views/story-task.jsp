@@ -48,7 +48,7 @@ THE SOFTWARE.
 <script type="text/javascript"
     src="<c:url value="/resources/js/jquery.autosize-min.js" />"></script>
     <script type="text/javascript"
-    src="<c:url value="/resources/js/jquery.jtruncate.pack.js" />"></script>
+    src="<c:url value="/resources/js/jquery.jtruncate.js" />"></script>
 <script type="text/javascript"
     src="<c:url value="/resources/js/scripts.js" />"></script>
 <script type="text/javascript" src="code.icepush"></script>

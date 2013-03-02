@@ -172,7 +172,7 @@ $(document).ready(function () {
      */
     var addLinksAndLineBreaks = function(text) {
         return text.replace(/\n/g, '<br />').replace( /(http:\/\/[^\s]+)/gi , '<a href="$1">$1</a>' );
-    }
+    };
 
     //Replacing spaces for underlines. Used for linking icons.
     var replaceSpaces = function (string) {
@@ -216,33 +216,6 @@ $(document).ready(function () {
         }
         var url = "../print-stories/" + areaName + "?ids=" + ids;
         window.open(url, "_blank");
-    };
-
-    /**
-     * Truncate a string to the given length, breaking at word boundaries and adding an elipsis
-     * @param string str String to be truncated
-     * @param integer limit Max length of the string
-     * @return string
-     */
-    var truncate = function (str, limit) {
-        var bits, i;
-        if(typeof str != "string") {
-            return "";
-        }
-        bits = str.split('');
-        if (bits.length > limit) {
-            for (i = bits.length - 1; i > -1; --i) {
-                if (i > limit) {
-                    bits.length = i;
-                }
-                else if (' ' === bits[i]) {
-                    bits.length = i;
-                    break;
-                }
-            }
-            bits.push('...');
-        }
-        return bits.join('');
     };
 
     /**
@@ -426,7 +399,7 @@ $(document).ready(function () {
             } else {
                 visible[currentChildId] = true;
             }
-        }
+        };
         e.stopPropagation();
     };
 
@@ -903,9 +876,11 @@ $(document).ready(function () {
         } else {
             story = getChild(storyId);
         }
+        
+        //Toggle visibility of the button for extending long descriptions:
+        $('.truncate_more_link',$('li#'+storyId)).toggleClass('hidden-edit');
+        
         if(isGoingIntoEdit(storyId)) {
-            //Because the height is fixed when the list is generated(to fix the slidetoggle-bug)
-            $('li.childLi').css("height", "auto");
             editingItems.push({id:storyId, type:"story"});
             removeGroupMember();
             $('button.'+storyId).button();
@@ -989,8 +964,6 @@ $(document).ready(function () {
                 addGroupMember();
                 reload();
             }
-            //Slide toggle fix
-            $('li.childLi').css("height", $('li.childLi').height());
         }
     };
 
@@ -1083,10 +1056,11 @@ $(document).ready(function () {
             taskId = $(this).closest('li').attr('id');
         }
         var task = getChild(taskId);
+        
+        //Toggle visibility of the button for extending long descriptions:
+        $('.truncate_more_link',$('li#'+taskId)).toggleClass('hidden-edit');
+        
         if(isGoingIntoEdit(taskId)) {
-            //Because the height is fixed when the list is generated(to fix the slidetoggle-bug)
-            $('#'+taskId).css("height", "auto");
-
             editingItems.push({id:taskId, type:"task"});
             removeGroupMember();
             $('button.'+taskId).button();
@@ -1112,8 +1086,6 @@ $(document).ready(function () {
                 addGroupMember();
                 reload();
             }
-            //Slide toggle fix
-            $('#'+taskId).css("height", $('#'+taskId).height());
         }
     };
 
@@ -1164,11 +1136,11 @@ $(document).ready(function () {
         } else {
             epic = getChild(epicId);
         }
+        
+        //Toggle visibility of the button for extending long descriptions:
+        $('.truncate_more_link',$('li#'+epicId)).toggleClass('hidden-edit');
 
         if(isGoingIntoEdit(epicId)) {
-            //Because the height is fixed when the list is generated(to fix the slidetoggle-bug)
-            $('#'+epicId).css("height", "auto");
-
             editingItems.push({id:epicId, type:"epic"});
             removeGroupMember();
 
@@ -1202,8 +1174,6 @@ $(document).ready(function () {
                 addGroupMember();
                 reload();
             }
-            //Slide toggle fix
-            $('#'+epicId).css("height", $('#'+epicId).height());
         }
     };
 
@@ -1252,8 +1222,10 @@ $(document).ready(function () {
         } else {
             theme = getChild(themeId);
         }
+        //Toggle visibility of the button for extending long descriptions:
+        $('.truncate_more_link',$('li#'+themeId)).toggleClass('hidden-edit');
+        
         if(isGoingIntoEdit(themeId)) {
-
             editingItems.push({id:themeId, type:"theme"});
             removeGroupMember();
 
@@ -1441,13 +1413,13 @@ $(document).ready(function () {
                         +'<p class="marginLeft typeMark">Task</p>'
                         //TYPE MARK END
                         +'<div class="taskTitle ' + currentChild.id + '">'
-                        +'<p class="taskHeading">Title: </p><p class="taskInfo">'+ addLinksAndLineBreaks(truncate(currentChild.title, 190)) +'</p>'
+                        +'<p class="taskHeading">Title: </p><p class="taskInfo">'+ addLinksAndLineBreaks(currentChild.title) +'</p>'
                         +'</div>'
-                        +'<textarea id="taskTitle' + currentChild.id + '" class="taskInfo bindChange taskTitle hidden-edit ' + currentChild.id + '" maxlength="500">' + currentChild.title + '</textarea>'
+                        +'<textarea id="taskTitle' + currentChild.id + '" placeholder="Title" class="taskInfo bindChange taskTitle hidden-edit ' + currentChild.id + '" maxlength="500">' + currentChild.title + '</textarea>'
                         //TASKTITLE END
                         //TASKOWNER START
                         +'<div class="taskOwner ' + currentChild.id + '" id="taskOwner' + currentChild.id + '"><p class="taskHeading">Owner: </p><p class="taskInfo">'+ currentChild.owner +'</p></div>'
-                        +'<textarea id="taskOwner' + currentChild.id + '" class="taskInfo bindChange taskOwner hidden-edit ' + currentChild.id + '" maxlength="50">' + currentChild.owner + '</textarea>'
+                        +'<textarea id="taskOwner' + currentChild.id + '" placeholder="Owner" class="taskInfo bindChange taskOwner hidden-edit ' + currentChild.id + '" maxlength="50">' + currentChild.owner + '</textarea>'
                         //TASKOWNER END
                         //STATUS FIELD START
                         +'<div class="taskStatus ' + currentChild.id + '" id="taskTitle' + currentChild.id + '"><p class="taskHeading">' + area.taskAttr1.name + ': </p><p class="taskInfo ' + currentChild.id + '">' + getAttrImage(currentChild.taskAttr1) + getNameIfExists(currentChild.taskAttr1) + '</p></div>'
@@ -1492,7 +1464,7 @@ $(document).ready(function () {
                         +'<textarea placeholder="Title" id="epicTitle'+currentParent.id+'" class="bindChange titleText hidden-edit title ' + currentParent.id + '" rows="1" maxlength="100">' + currentParent.title + '</textarea>'
                         //EPIC TITLE END
                         //EPIC DESCRIPTION START
-                        +'<p class="description ' + currentParent.id + '">' + addLinksAndLineBreaks(truncate(currentParent.description, 190)) + '</p>'
+                        +'<p class="description ' + currentParent.id + '">' + addLinksAndLineBreaks(currentParent.description) + '</p>'
                         +'<textarea placeholder="Description" id="epicDescription'+currentParent.id+'" class="bindChange hidden-edit description ' + currentParent.id + '" rows="2" maxlength="1000">' + currentParent.description + '</textarea>'
                         //EPIC DESCRIPTION END
                         +'</div>'
@@ -1533,7 +1505,7 @@ $(document).ready(function () {
                         +'<textarea placeholder="Title" id="title'+currentChild.id+'" class="bindChange titleText hidden-edit title ' + currentChild.id + '" rows="1" maxlength="100">' + currentChild.title + '</textarea>'
                         //STORY TITLE END
                         //STORYDESCRIPTION START
-                        +'<p class="description ' + currentChild.id + '">' + addLinksAndLineBreaks(truncate(currentChild.description, 190)) + '</p>'
+                        +'<p class="description ' + currentChild.id + '">' + addLinksAndLineBreaks(currentChild.description) + '</p>'
                         +'<textarea placeholder="Description" id="description'+currentChild.id+'" class="bindChange hidden-edit description ' + currentChild.id + '" rows="2" maxlength="1000">' + currentChild.description + '</textarea>'
                         //STORYDESCRIPTION END
                         +'</div>'
@@ -1632,7 +1604,7 @@ $(document).ready(function () {
                         +'<textarea placeholder="Title" id="themeTitle'+currentParent.id+'" class="bindChange titleText hidden-edit title ' + currentParent.id + '" rows="1" maxlength="100">' + currentParent.title + '</textarea>'
                         //TITLE END
                         //DESCRIPTION START
-                        +'<p class="description ' + currentParent.id + '">' + addLinksAndLineBreaks(truncate(currentParent.description, 190)) + '</p>'
+                        +'<p class="description ' + currentParent.id + '">' + addLinksAndLineBreaks(currentParent.description) + '</p>'
                         +'<textarea placeholder="Description" id="themeDescription'+currentParent.id+'" class="bindChange hidden-edit description ' + currentParent.id + '" rows="2" maxlength="1000">' + currentParent.description + '</textarea>'
                         //DESCRIPTION END
                         +'</div>'
@@ -1663,7 +1635,7 @@ $(document).ready(function () {
                         +'<textarea placeholder="Title" id="epicTitle'+currentChild.id+'" class="bindChange titleText hidden-edit title ' + currentChild.id + '" rows="1" maxlength="100">' + currentChild.title + '</textarea>'
                         //TITLE END
                         //DESCRIPTION START
-                        +'<p class="description ' + currentChild.id + '">' + addLinksAndLineBreaks(truncate(currentChild.description, 190)) + '</p>'
+                        +'<p class="description ' + currentChild.id + '">' + addLinksAndLineBreaks(currentChild.description) + '</p>'
                         +'<textarea placeholder="Description" id="epicDescription'+currentChild.id+'" class="bindChange hidden-edit description ' + currentChild.id + '" rows="2" maxlength="1000">' + currentChild.description + '</textarea>'
                         //DESCRIPTION END
                         +'</div>'
@@ -1691,16 +1663,25 @@ $(document).ready(function () {
         for (var i = 0; i < selectedItems.length; ++i) {
             $('li[id|=' + selectedItems[i].id + ']').addClass("ui-selected");
         }
+        
+        $('p.description,p.taskInfo').jTruncate({  
+            length: 190,  
+            minTrail: 0,  
+            moreImage: "../resources/image/font-awesome/arrow_down.png",  
+            lessImage: "../resources/image/font-awesome/arrow_up.png",  
+            ellipsisText: "..."
+        });  
 
         //Make sure all items that should be invisible are invisible
-        //and fix bouncing bug on the li
         $(".childLi").each(function () {
-            $(this).css("height", $(this).height());
             var currentId = $(this).attr("id");
             if (visible[currentId] != true) {
                 $(this).addClass("ui-hidden");
             }
         });
+        
+        //Fixing bouncing <li>-bug
+        $("li").css("width", $("li").width());
 
         $('.expand-icon').click(expandClick);
         $(".parent-child-list").children("li").click(liClick);
@@ -1791,13 +1772,7 @@ $(document).ready(function () {
             disableEdits();
         }
         
-        $('p.description').jTruncate({  
-            length: 190,  
-            minTrail: 0,  
-            moreText: "[see all]",  
-            lessText: "[hide extra]",  
-            ellipsisText: "..."
-        });  
+        
     };
 
     var setHeightAndMargin = function (value) {
@@ -1806,7 +1781,11 @@ $(document).ready(function () {
     };
 
     $(window).resize(function() {
-        $('li.childLi').css("height", "auto");
+        //Update the width of all <li>-elements.
+    	//This has to be done in order to avoid bouncing-<li> bug.
+        $('li').css("width", "auto");
+        $("li").css("width", $("li").width());
+        
         if($(window).width() < 1280) {
             setHeightAndMargin(116);
         } else {
